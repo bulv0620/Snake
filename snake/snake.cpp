@@ -175,8 +175,27 @@ int snakeStatus() {
 	return 1;
 }
 
+//5.结束游戏分数显示
+void showScore() {
+	//擦除蛇身
+	for (int i = 0; i < snake.len; i++)
+	{
+		gotoxy(snake.x[i], snake.y[i]);
+		printf(" ");
+	}
+	//擦除食物
+	gotoxy(food.x, food.y);
+	printf(" ");
+	//中央打印分数
+	gotoxy((MAPWIDTH / 2) - 9, (MAPHEIGHT / 2) - 1);
+	printf("****************");
+	gotoxy((MAPWIDTH / 2) - 9, MAPHEIGHT / 2);
+	printf("  your score:%d ", mark);
+	gotoxy((MAPWIDTH / 2) - 9, (MAPHEIGHT / 2) + 1);
+	printf("****************");
+}
 
-//5.辅助函数：光标移动
+//6.辅助函数：光标移动
 void gotoxy(int x, int y) {
 	//调用win32 API 去设置控制台的光标位置
 	//1.找到控制台的这个窗口
@@ -202,12 +221,7 @@ int main() {
 			break;
 		}
 	}
-	gotoxy((MAPWIDTH / 2) - 9, (MAPHEIGHT / 2)-1);
-	printf("****************");
-	gotoxy((MAPWIDTH / 2) - 9, MAPHEIGHT / 2);
-	printf("  your score:%d ",mark);
-	gotoxy((MAPWIDTH / 2) - 9, (MAPHEIGHT / 2) + 1);
-	printf("****************");
+	showScore();
 	gotoxy(0 , MAPHEIGHT+1);
 	printf("按回车键关闭此窗口. . .");
 	getchar();
