@@ -49,7 +49,7 @@ void drawMap() {
 	for (int i = 0; i < MAPHEIGHT; i++) {
 		gotoxy(0, i);
 		printf("##");
-		gotoxy(MAPWIDTH - 3, i);
+		gotoxy(MAPWIDTH - 2, i);
 		printf("##");
 
 	}
@@ -71,13 +71,13 @@ void drawMap() {
 	//画蛇
 	//画蛇头
 	gotoxy(snake.x[0], snake.y[0]);
-	printf("@");
+	printf("■");
 	//画剩下身体
 	for (int k = 1; k < snake.len; k++) {
 		snake.x[k] = snake.x[k - 1] + 2;
 		snake.y[k] = snake.y[k - 1];
 		gotoxy(snake.x[k], snake.y[k]);
-		printf("@");
+		printf("■");
 	}
 	//画食物
 		//确定坐标
@@ -89,7 +89,7 @@ void drawMap() {
 		}
 	}
 	gotoxy(food.x, food.y);
-	printf("$");
+	printf("■");
 
 }
 //食物的产生
@@ -115,7 +115,7 @@ void createFood() {
 			}
 		}
 		gotoxy(food.x, food.y);
-		printf("$");
+		printf("■");
 		snake.len++;
 		changeFlag = 1;//蛇的标记是1	
 	}
@@ -159,7 +159,7 @@ void keyDown()
 		break;
 	}
 	gotoxy(snake.x[0], snake.y[0]);
-	printf("@");
+	printf("■");
 	changeFlag = 0;
 	gotoxy(MAPHEIGHT + 2, 0);  //移动不能一直看着光标
 
@@ -182,16 +182,16 @@ void showScore() {
 	for (int i = 0; i < snake.len; i++)
 	{
 		gotoxy(snake.x[i], snake.y[i]);
-		printf(" ");
+		printf("  ");
 	}
 	//擦除食物
 	gotoxy(food.x, food.y);
-	printf(" ");
+	printf("  ");
 	//中央打印分数
 	gotoxy((MAPWIDTH / 2) - 9, (MAPHEIGHT / 2) - 2);
 	printf("****************");
 	gotoxy((MAPWIDTH / 2) - 9, (MAPHEIGHT / 2)-1);
-	printf("  your score:%d ", mark);
+	printf(" your score:%d", mark);
 	gotoxy((MAPWIDTH / 2) - 9, MAPHEIGHT / 2);
 	printf("****************");
 }
@@ -238,29 +238,29 @@ void showHighScore() {
 	getHighScore(&hscore);
 	//左右边框
 	for (int i = 0; i < 8; i++) {
-		gotoxy(MAPWIDTH + 17, i);
-		printf("*");
-		gotoxy(MAPWIDTH , i);
-		printf("*");
+		gotoxy(MAPWIDTH + 20, i);
+		printf("##");
+		gotoxy(MAPWIDTH+2 , i);
+		printf("##");
 	}
 	//上下边框
-	gotoxy(MAPWIDTH + 1, 0);
-	printf("****************");
-	gotoxy(MAPWIDTH + 1, 2);
-	printf("****************");
-	gotoxy(MAPWIDTH + 1, 7);
-	printf("****************");
+	gotoxy(MAPWIDTH + 4, 0);
+	printf("#################");
+	gotoxy(MAPWIDTH + 4, 2);
+	printf("#################");
+	gotoxy(MAPWIDTH + 4, 7);
+	printf("#################");
 	//显示玩法
-	gotoxy(MAPWIDTH + 2, 3);
-	printf(" key W:up");
-	gotoxy(MAPWIDTH + 2, 4);
-	printf(" key S:down");
-	gotoxy(MAPWIDTH + 2, 5);
-	printf(" key A:left");
-	gotoxy(MAPWIDTH + 2, 6);
-	printf(" key D:right");
+	gotoxy(MAPWIDTH + 4, 3);
+	printf(" Key W:up");
+	gotoxy(MAPWIDTH + 4, 4);
+	printf(" Key S:down");
+	gotoxy(MAPWIDTH + 4, 5);
+	printf(" Key A:left");
+	gotoxy(MAPWIDTH + 4, 6);
+	printf(" Key D:right");
 	//显示最高分
-	gotoxy(MAPWIDTH + 2, 1);
+	gotoxy(MAPWIDTH + 4, 1);
 	printf(" Top Score:%d",hscore);
 }
 
