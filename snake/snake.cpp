@@ -4,15 +4,12 @@
 #include<windows.h>
 #include<time.h> //食物随机
 #include<conio.h> //按键监控
-//辅助宏定义
+
 #define MAPHEIGHT 25
 #define MAPWIDTH 60
 #define SNAKESIZE 645
 
-//数据设计/////// 
-
 //食物的结构体
-
 struct {
 	//定位
 	int x;
@@ -28,7 +25,7 @@ struct {
 	int speed;
 }snake;
 
-//全局变量////////
+//全局变量
 int key; //移动方向
 int changeFlag = 0;//蛇的变化标记
 int mark = 0;//积分
@@ -39,14 +36,16 @@ int snakeStatus();
 void createFood();
 void showScore();
 void newGame();
+void highScore();
+void getHighScore(int* highscore);
+void storeHighScore(int highscore);
 int main();
 
-//1.画地图
+//画地图
 void drawMap() {
-	//O蛇身  e食物
 	srand((unsigned int)time(NULL));
-	//1.圈墙圈地
-	//1.1 左右边框
+	//圈墙圈地
+	//左右边框
 	for (int i = 0; i < MAPHEIGHT; i++) {
 		gotoxy(0, i);
 		printf("##");
@@ -54,7 +53,7 @@ void drawMap() {
 		printf("##");
 
 	}
-	//1.2 上下边框
+	//上下边框
 	for (int i = 0; i < MAPWIDTH - 1; i++) {
 		gotoxy(i, 0);
 		printf("#");
@@ -62,14 +61,14 @@ void drawMap() {
 		printf("#");
 
 	}
-	//2.画蛇s
-	//2.1确定蛇的属性
+	//画蛇s
+	//确定蛇的属性
 	snake.len = 3;
 	snake.speed = 240;
 	//开头蛇在屏幕的中间
 	snake.x[0] = MAPWIDTH / 2;
 	snake.y[0] = MAPHEIGHT / 2;
-	//2.2 画蛇
+	//画蛇
 	//画蛇头
 	gotoxy(snake.x[0], snake.y[0]);
 	printf("@");
@@ -80,8 +79,8 @@ void drawMap() {
 		gotoxy(snake.x[k], snake.y[k]);
 		printf("@");
 	}
-	//3.画食物
-		//3.1确定坐标
+	//画食物
+		//确定坐标
 	while (1) {
 		food.x = rand() % (MAPWIDTH - 4) + 2;
 		food.y = rand() % (MAPHEIGHT - 2) + 1;
@@ -89,12 +88,11 @@ void drawMap() {
 			break;
 		}
 	}
-	//3.2画出来就可以了
 	gotoxy(food.x, food.y);
 	printf("$");
 
 }
-//2.食物的产生
+//食物的产生
 void createFood() {
 	//蛇把食物吃了
 	if (snake.x[0] == food.x && snake.y[0] == food.y) {
@@ -123,7 +121,7 @@ void createFood() {
 	}
 }
 
-//3.按键操作
+//按键操作
 void keyDown()
 {
 	//无按键的处理
@@ -167,7 +165,7 @@ void keyDown()
 
 }
 
-//4.蛇的状态:判读是否结束游戏
+//蛇的状态:判读是否结束游戏
 int snakeStatus() {
 	if (snake.x[0] == 0 || snake.x[0] == MAPWIDTH - 2 || snake.y[0] == 0 || snake.y[0] == MAPHEIGHT - 1)
 		return 0;
@@ -178,7 +176,7 @@ int snakeStatus() {
 	return 1;
 }
 
-//5.结束游戏分数显示
+//结束游戏分数显示
 void showScore() {
 	//擦除蛇身
 	for (int i = 0; i < snake.len; i++)
@@ -198,7 +196,75 @@ void showScore() {
 	printf("****************");
 }
 
-//6.重新开始游戏询问
+//最高分判断记录
+void highScore() {
+	int hscore = 0;//储存最高分  本局分数变量mark
+	getHighScore(&hscore);
+	if (mark > hscore)
+		hscore = mark;
+	storeHighScore(hscore);
+}
+
+//获取最高分
+void getHighScore(int* highscore)
+{
+	FILE* fp = NULL;   //文件指针，指向成功打开的文件
+	//打开文件，以只读的方式r
+	fp = fopen("highscore.txt", "r");
+	//如果文件不存在，打开文件，以写入的方式w
+	if (fp == NULL)
+	{
+		fp = fopen("highscore.txt", "w");
+		fprintf(fp, "%-10d", *highscore);
+	}
+	else
+		fscanf(fp, "%10d", highscore);
+	//关闭文件
+	fclose(fp);
+}
+
+//存储最高分
+void storeHighScore(int highscore)
+{
+	FILE* fp = NULL;
+	fp = fopen("highscore.txt", "w");
+	fprintf(fp, "%-10d", highscore);
+	fclose(fp);
+}
+
+//最高分展示
+void showHighScore() {
+	int hscore = 0; 
+	getHighScore(&hscore);
+	//左右边框
+	for (int i = 0; i < 8; i++) {
+		gotoxy(MAPWIDTH + 17, i);
+		printf("*");
+		gotoxy(MAPWIDTH , i);
+		printf("*");
+	}
+	//上下边框
+	gotoxy(MAPWIDTH + 1, 0);
+	printf("****************");
+	gotoxy(MAPWIDTH + 1, 2);
+	printf("****************");
+	gotoxy(MAPWIDTH + 1, 7);
+	printf("****************");
+	//显示玩法
+	gotoxy(MAPWIDTH + 2, 3);
+	printf(" key W:up");
+	gotoxy(MAPWIDTH + 2, 4);
+	printf(" key S:down");
+	gotoxy(MAPWIDTH + 2, 5);
+	printf(" key A:left");
+	gotoxy(MAPWIDTH + 2, 6);
+	printf(" key D:right");
+	//显示最高分
+	gotoxy(MAPWIDTH + 2, 1);
+	printf(" Top Score:%d",hscore);
+}
+
+//重新开始游戏询问
 void newGame() {
 	
 	char bo = 'n';
@@ -210,7 +276,7 @@ void newGame() {
 		gotoxy((MAPWIDTH / 2) - 9, (MAPHEIGHT / 2) - 2);
 		printf("                ");
 		gotoxy((MAPWIDTH / 2) - 9, (MAPHEIGHT / 2)-1);
-		printf("                         ", mark);
+		printf("                         ");
 		gotoxy((MAPWIDTH / 2) - 9, MAPHEIGHT / 2);
 		printf("                ");
 		gotoxy(18, (MAPHEIGHT / 2) + 2);
@@ -222,7 +288,7 @@ void newGame() {
 	}
 }
 
-//7.辅助函数：光标移动
+//辅助函数：光标移动
 void gotoxy(int x, int y) {
 	//调用win32 API 去设置控制台的光标位置
 	//1.找到控制台的这个窗口
@@ -239,8 +305,7 @@ void gotoxy(int x, int y) {
 int main() {
 	mark = 0;//初始化分数
 	key = 'a';//初始化移动方向
-	gotoxy(0, MAPHEIGHT);
-	printf("Tips: W:Up  S:Down  A:Left  D:Right");
+	showHighScore();
 	drawMap();
 	while (1) {
 		createFood();
@@ -251,6 +316,7 @@ int main() {
 		}
 	}
 	showScore();
+	highScore();
 	newGame();
 	return 0;
 }

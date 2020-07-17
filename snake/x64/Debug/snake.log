@@ -1,4 +1,2 @@
 ﻿  snake.cpp
-C:\Users\FENG\Desktop\snake\snake\snake.cpp(213,39): warning C4474: printf: 格式字符串中传递的参数太多
-C:\Users\FENG\Desktop\snake\snake\snake.cpp(213,39): message : 占位符和其参数预计 0 可变参数，但提供的却是 1 参数
   snake.vcxproj -> C:\Users\FENG\Desktop\snake\x64\Debug\snake.exe
