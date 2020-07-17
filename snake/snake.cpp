@@ -39,6 +39,7 @@ void newGame();
 void highScore();
 void getHighScore(int* highscore);
 void storeHighScore(int highscore);
+void changeScore();
 int main();
 
 //画地图
@@ -48,17 +49,17 @@ void drawMap() {
 	//左右边框
 	for (int i = 0; i < MAPHEIGHT; i++) {
 		gotoxy(0, i);
-		printf("##");
+		printf("■");
 		gotoxy(MAPWIDTH - 2, i);
-		printf("##");
+		printf("■");
 
 	}
 	//上下边框
-	for (int i = 0; i < MAPWIDTH - 1; i++) {
+	for (int i = 0; i < MAPWIDTH - 1; i+=2) {
 		gotoxy(i, 0);
-		printf("#");
+		printf("■");
 		gotoxy(i, MAPHEIGHT - 1);
-		printf("#");
+		printf("■");
 
 	}
 	//画蛇s
@@ -89,7 +90,7 @@ void drawMap() {
 		}
 	}
 	gotoxy(food.x, food.y);
-	printf("■");
+	printf("◆");
 
 }
 //食物的产生
@@ -97,6 +98,7 @@ void createFood() {
 	//蛇把食物吃了
 	if (snake.x[0] == food.x && snake.y[0] == food.y) {
 		++mark;
+		changeScore();//刷新显示的当前分数
 		//产生的食物不能再蛇的身上，并且坐标是偶数
 		srand((unsigned int)time(NULL));
 		while (1) {
@@ -115,7 +117,7 @@ void createFood() {
 			}
 		}
 		gotoxy(food.x, food.y);
-		printf("■");
+		printf("◆");
 		snake.len++;
 		changeFlag = 1;//蛇的标记是1	
 	}
@@ -188,12 +190,12 @@ void showScore() {
 	gotoxy(food.x, food.y);
 	printf("  ");
 	//中央打印分数
-	gotoxy((MAPWIDTH / 2) - 9, (MAPHEIGHT / 2) - 2);
-	printf("****************");
-	gotoxy((MAPWIDTH / 2) - 9, (MAPHEIGHT / 2)-1);
-	printf(" your score:%d", mark);
-	gotoxy((MAPWIDTH / 2) - 9, MAPHEIGHT / 2);
-	printf("****************");
+	gotoxy((MAPWIDTH / 2) - 7, (MAPHEIGHT / 2) - 2);
+	printf("———————");
+	gotoxy((MAPWIDTH / 2) - 7, (MAPHEIGHT / 2)-1);
+	printf(" 你的分数:%d", mark);
+	gotoxy((MAPWIDTH / 2) - 7, MAPHEIGHT / 2);
+	printf("———————");
 }
 
 //最高分判断记录
@@ -232,43 +234,56 @@ void storeHighScore(int highscore)
 	fclose(fp);
 }
 
+//当前分数刷新
+void changeScore(){
+	gotoxy(MAPWIDTH + 4, 3);
+	printf(" 当前分数:%d",mark);
+}
+
 //最高分展示
 void showHighScore() {
 	int hscore = 0; 
 	getHighScore(&hscore);
 	//左右边框
-	for (int i = 0; i < 8; i++) {
-		gotoxy(MAPWIDTH + 20, i);
-		printf("##");
+	for (int i = 0; i < 11; i++) {
+		gotoxy(MAPWIDTH + 18, i);
+		printf("■");
 		gotoxy(MAPWIDTH+2 , i);
-		printf("##");
+		printf("■");
 	}
 	//上下边框
 	gotoxy(MAPWIDTH + 4, 0);
-	printf("#################");
-	gotoxy(MAPWIDTH + 4, 2);
-	printf("#################");
-	gotoxy(MAPWIDTH + 4, 7);
-	printf("#################");
-	//显示玩法
-	gotoxy(MAPWIDTH + 4, 3);
-	printf(" Key W:up");
-	gotoxy(MAPWIDTH + 4, 4);
-	printf(" Key S:down");
-	gotoxy(MAPWIDTH + 4, 5);
-	printf(" Key A:left");
-	gotoxy(MAPWIDTH + 4, 6);
-	printf(" Key D:right");
-	//显示最高分
+	printf("■■■■■■■");
 	gotoxy(MAPWIDTH + 4, 1);
-	printf(" Top Score:%d",hscore);
+	printf("———————");
+	gotoxy(MAPWIDTH + 4, 4);
+	printf("———————");
+	gotoxy(MAPWIDTH + 4, 9);
+	printf("———————");
+	gotoxy(MAPWIDTH + 4, 10);
+	printf("■■■■■■■");
+	//显示玩法
+	gotoxy(MAPWIDTH + 4, 5);
+	printf(" 按钮 W:向上");
+	gotoxy(MAPWIDTH + 4, 6);
+	printf(" 按钮 S:向下");
+	gotoxy(MAPWIDTH + 4, 7);
+	printf(" 按钮 A:向左");
+	gotoxy(MAPWIDTH + 4, 8);
+	printf(" 按钮 D:向右");
+	//显示最高分
+	gotoxy(MAPWIDTH + 4, 2);
+	printf(" 历史最高:%d",hscore);
+	//显示当前分数
+	gotoxy(MAPWIDTH + 4, 3);
+	printf(" 当前分数:%d",mark);
 }
 
 //重新开始游戏询问
 void newGame() {
 	
 	char bo = 'n';
-	gotoxy(18 , (MAPHEIGHT / 2)+2);
+	gotoxy(19 , (MAPHEIGHT / 2)+2);
 	printf("是否重新开始游戏(y/n):");
 	bo = getchar();
 	getchar();
