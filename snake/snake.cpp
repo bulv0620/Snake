@@ -190,11 +190,11 @@ void showScore() {
 	gotoxy(food.x, food.y);
 	printf(" ");
 	//中央打印分数
-	gotoxy((MAPWIDTH / 2) - 9, (MAPHEIGHT / 2) - 1);
+	gotoxy((MAPWIDTH / 2) - 9, (MAPHEIGHT / 2) - 2);
 	printf("****************");
-	gotoxy((MAPWIDTH / 2) - 9, MAPHEIGHT / 2);
+	gotoxy((MAPWIDTH / 2) - 9, (MAPHEIGHT / 2)-1);
 	printf("  your score:%d ", mark);
-	gotoxy((MAPWIDTH / 2) - 9, (MAPHEIGHT / 2) + 1);
+	gotoxy((MAPWIDTH / 2) - 9, MAPHEIGHT / 2);
 	printf("****************");
 }
 
@@ -202,18 +202,18 @@ void showScore() {
 void newGame() {
 	
 	char bo = 'n';
-	gotoxy(0, MAPHEIGHT + 1);
+	gotoxy(18 , (MAPHEIGHT / 2)+2);
 	printf("是否重新开始游戏(y/n):");
 	bo = getchar();
 	getchar();
 	if (bo == 'y') {
-		gotoxy((MAPWIDTH / 2) - 9, (MAPHEIGHT / 2) - 1);
+		gotoxy((MAPWIDTH / 2) - 9, (MAPHEIGHT / 2) - 2);
 		printf("                ");
-		gotoxy((MAPWIDTH / 2) - 9, MAPHEIGHT / 2);
+		gotoxy((MAPWIDTH / 2) - 9, (MAPHEIGHT / 2)-1);
 		printf("                         ", mark);
-		gotoxy((MAPWIDTH / 2) - 9, (MAPHEIGHT / 2) + 1);
+		gotoxy((MAPWIDTH / 2) - 9, MAPHEIGHT / 2);
 		printf("                ");
-		gotoxy(0, MAPHEIGHT + 1);
+		gotoxy(18, (MAPHEIGHT / 2) + 2);
 		printf("                           ");
 		main();
 	}
@@ -240,7 +240,7 @@ int main() {
 	mark = 0;//初始化分数
 	key = 'a';//初始化移动方向
 	gotoxy(0, MAPHEIGHT);
-	printf("W:Up  S:Down  A:Left  D:Right");
+	printf("Tips: W:Up  S:Down  A:Left  D:Right");
 	drawMap();
 	while (1) {
 		createFood();
