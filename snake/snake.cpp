@@ -29,7 +29,7 @@ struct {
 }snake;
 
 //全局变量////////
-int key = 'a'; //初始化移动方向
+int key; //移动方向
 int changeFlag = 0;//蛇的变化标记
 int mark = 0;//积分
 void drawMap();
@@ -37,8 +37,11 @@ void gotoxy(int x, int y);
 void keyDown();
 int snakeStatus();
 void createFood();
-//1.画地图
+void showScore();
+void newGame();
+int main();
 
+//1.画地图
 void drawMap() {
 	//O蛇身  e食物
 	srand((unsigned int)time(NULL));
@@ -89,9 +92,9 @@ void drawMap() {
 	//3.2画出来就可以了
 	gotoxy(food.x, food.y);
 	printf("$");
-	//2.食物的产生
-}
 
+}
+//2.食物的产生
 void createFood() {
 	//蛇把食物吃了
 	if (snake.x[0] == food.x && snake.y[0] == food.y) {
@@ -195,7 +198,31 @@ void showScore() {
 	printf("****************");
 }
 
-//6.辅助函数：光标移动
+//6.重新开始游戏询问
+void newGame() {
+	
+	char bo = 'n';
+	gotoxy(0, MAPHEIGHT + 1);
+	printf("是否重新开始游戏(y/n):");
+	bo = getchar();
+	getchar();
+	if (bo == 'y') {
+		gotoxy((MAPWIDTH / 2) - 9, (MAPHEIGHT / 2) - 1);
+		printf("                ");
+		gotoxy((MAPWIDTH / 2) - 9, MAPHEIGHT / 2);
+		printf("                         ", mark);
+		gotoxy((MAPWIDTH / 2) - 9, (MAPHEIGHT / 2) + 1);
+		printf("                ");
+		gotoxy(0, MAPHEIGHT + 1);
+		printf("                           ");
+		main();
+	}
+	else {
+		return;
+	}
+}
+
+//7.辅助函数：光标移动
 void gotoxy(int x, int y) {
 	//调用win32 API 去设置控制台的光标位置
 	//1.找到控制台的这个窗口
@@ -210,6 +237,8 @@ void gotoxy(int x, int y) {
 }
 
 int main() {
+	mark = 0;//初始化分数
+	key = 'a';//初始化移动方向
 	gotoxy(0, MAPHEIGHT);
 	printf("W:Up  S:Down  A:Left  D:Right");
 	drawMap();
@@ -222,8 +251,6 @@ int main() {
 		}
 	}
 	showScore();
-	gotoxy(0 , MAPHEIGHT+1);
-	printf("按回车键关闭此窗口. . .");
-	getchar();
+	newGame();
 	return 0;
 }
