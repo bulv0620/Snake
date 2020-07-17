@@ -40,6 +40,7 @@ void highScore();
 void getHighScore(int* highscore);
 void storeHighScore(int highscore);
 void changeScore();
+void snakeSpeed();
 int main();
 
 //画地图
@@ -65,7 +66,7 @@ void drawMap() {
 	//画蛇s
 	//确定蛇的属性
 	snake.len = 3;
-	snake.speed = 240;
+	snakeSpeed();//速度选择
 	//开头蛇在屏幕的中间
 	snake.x[0] = MAPWIDTH / 2;
 	snake.y[0] = MAPHEIGHT / 2;
@@ -236,7 +237,7 @@ void storeHighScore(int highscore)
 
 //当前分数刷新
 void changeScore(){
-	gotoxy(MAPWIDTH + 4, 3);
+	gotoxy(MAPWIDTH + 4, 4);
 	printf(" 当前分数:%d",mark);
 }
 
@@ -245,7 +246,7 @@ void showHighScore() {
 	int hscore = 0; 
 	getHighScore(&hscore);
 	//左右边框
-	for (int i = 0; i < 11; i++) {
+	for (int i = 0; i < 13; i++) {
 		gotoxy(MAPWIDTH + 18, i);
 		printf("■");
 		gotoxy(MAPWIDTH+2 , i);
@@ -256,27 +257,32 @@ void showHighScore() {
 	printf("■■■■■■■");
 	gotoxy(MAPWIDTH + 4, 1);
 	printf("———————");
-	gotoxy(MAPWIDTH + 4, 4);
+	gotoxy(MAPWIDTH + 4, 3);
 	printf("———————");
-	gotoxy(MAPWIDTH + 4, 9);
+	gotoxy(MAPWIDTH + 4, 6);
 	printf("———————");
-	gotoxy(MAPWIDTH + 4, 10);
+	gotoxy(MAPWIDTH + 4, 11);
+	printf("———————");
+	gotoxy(MAPWIDTH + 4, 12);
 	printf("■■■■■■■");
 	//显示玩法
-	gotoxy(MAPWIDTH + 4, 5);
-	printf(" 按钮 W:向上");
-	gotoxy(MAPWIDTH + 4, 6);
-	printf(" 按钮 S:向下");
 	gotoxy(MAPWIDTH + 4, 7);
-	printf(" 按钮 A:向左");
+	printf(" 按钮 W:向上");
 	gotoxy(MAPWIDTH + 4, 8);
+	printf(" 按钮 S:向下");
+	gotoxy(MAPWIDTH + 4, 9);
+	printf(" 按钮 A:向左");
+	gotoxy(MAPWIDTH + 4, 10);
 	printf(" 按钮 D:向右");
 	//显示最高分
 	gotoxy(MAPWIDTH + 4, 2);
 	printf(" 历史最高:%d",hscore);
 	//显示当前分数
-	gotoxy(MAPWIDTH + 4, 3);
-	printf(" 当前分数:%d",mark);
+	gotoxy(MAPWIDTH + 4, 4);
+	printf(" 当前分数:%d  ",mark);
+	//显示当前速度
+	gotoxy(MAPWIDTH + 4, 5);
+	printf(" 当前速度:未知");
 }
 
 //重新开始游戏询问
@@ -300,6 +306,55 @@ void newGame() {
 	}
 	else {
 		return;
+	}
+}
+
+//移动速度选项
+void snakeSpeed() {
+	char bo;
+	gotoxy(13, (MAPHEIGHT / 2) - 6);
+	printf("————————————————");
+	gotoxy(13, (MAPHEIGHT / 2) - 3);
+	printf("————————————————");
+	gotoxy(13, (MAPHEIGHT / 2) - 4);
+	printf("   f:快速  m:中速  s:快速");
+	gotoxy(13, (MAPHEIGHT / 2) - 5);
+	printf("请选择蛇移动的速度等级(f/m/s):");
+	bo = getchar();
+	getchar();
+	if (bo == 'f')
+	{
+		snake.speed = 70;
+		//显示当前速度
+		gotoxy(MAPWIDTH + 4, 5);
+		printf(" 当前速度:快  ");
+	}
+	else if (bo == 'm')
+	{
+		snake.speed = 200;
+		//显示当前速度
+		gotoxy(MAPWIDTH + 4, 5);
+		printf(" 当前速度:中  ");
+	}
+	else if (bo == 's')
+	{
+		snake.speed = 380;
+		//显示当前速度
+		gotoxy(MAPWIDTH + 4, 5);
+		printf(" 当前速度:慢  ");
+	}
+	else {
+		for (int i = 3; i < 7; i++)
+		{
+			gotoxy(13, (MAPHEIGHT / 2) - i);
+			printf("                                  ");
+		}
+		snakeSpeed();
+	}
+	for (int i = 3; i < 7; i++)
+	{
+		gotoxy(13, (MAPHEIGHT / 2) - i);
+		printf("                                  ");
 	}
 }
 
